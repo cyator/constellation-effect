@@ -6,9 +6,8 @@ export function handleParticles(particleArray, ctx) {
 			// pythagoras theorem
 			const dx = particleArray[i].x - particleArray[j].x;
 			const dy = particleArray[i].y - particleArray[j].y;
-			const distance = Math.sqrt(dx * dx + dy * dy);
-			console.log(distance);
-			if (distance < 100) {
+			const distance = dx * dx + dy * dy;
+			if (distance < 10000) {
 				ctx.beginPath();
 				ctx.strokeStyle = particleArray[i].color;
 				ctx.lineWidth = 0.5;

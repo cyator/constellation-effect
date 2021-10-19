@@ -1,23 +1,36 @@
 import { handleParticles } from './handleParticles.js';
 import Particle from './particle.js';
 
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-
+let canvas;
+let ctx;
 let particleArray = [];
 let hue = 0;
-
-window.addEventListener('resize', function () {
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight;
-});
+let interval = 1000 / 60;
+let timer = 0;
+let lastTime = 0;
+let canstellation;
 
 const mouse = {
 	x: undefined,
 	y: undefined,
 };
 
-canvas.addEventListener('click', (e) => {
+window.onload = () => {
+	canvas = document.getElementById('canvas');
+	ctx = canvas.getContext('2d');
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	animate(0);
+};
+
+window.addEventListener('resize', () => {
+	cancelAnimationFrame(canstellation);
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	animate(0);
+});
+
+window.addEventListener('click', (e) => {
 	mouse.x = e.x;
 	mouse.y = e.y;
 	for (let i = 0; i < 2; i++) {
@@ -25,7 +38,7 @@ canvas.addEventListener('click', (e) => {
 	}
 });
 
-canvas.addEventListener('mousemove', (e) => {
+window.addEventListener('mousemove', (e) => {
 	mouse.x = e.x;
 	mouse.y = e.y;
 	for (let i = 0; i < 2; i++) {
@@ -33,11 +46,16 @@ canvas.addEventListener('mousemove', (e) => {
 	}
 });
 
-function animate() {
-	ctx.fillStyle = 'rgba(0,0,0,0.02)';
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
-	handleParticles(particleArray, ctx);
-	hue += 0.5;
-	requestAnimationFrame(animate);
+function animate(timeStamp) {
+	const deltaTime = timeStamp - lastTime;
+	lastTime = timeStamp;
+	if (timer > interval) {
+		ctx.fillStyle = 'rgba(0,0,0,0.02)';
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		handleParticles(particleArray, ctx);
+		hue += 0.5;
+	} else {
+		timer += deltaTime;
+	}
+	canstellation = requestAnimationFrame(animate);
 }
-requestAnimationFrame(animate);

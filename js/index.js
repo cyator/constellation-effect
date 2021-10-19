@@ -2,7 +2,6 @@ import CanstellationEffect from './Canstellation.js';
 
 let canvas;
 let ctx;
-let particleArray = [];
 let canstellationAnimation;
 let canstellationEffect;
 
@@ -44,10 +43,13 @@ window.addEventListener('click', (e) => {
 	}
 });
 
-window.addEventListener('mousemove', (e) => {
+window.addEventListener('mousemove', moveEventFunction);
+window.addEventListener('touchmove', moveEventFunction);
+
+function moveEventFunction(e) {
 	mouse.x = e.x;
 	mouse.y = e.y;
 	for (let i = 0; i < 2; i++) {
 		canstellationEffect.update(mouse);
 	}
-});
+}
